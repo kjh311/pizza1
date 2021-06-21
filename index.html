@@ -27,6 +27,13 @@
     <link rel="stylesheet" href="css/flaticon.css">
     <link rel="stylesheet" href="css/icomoon.css">
     <link rel="stylesheet" href="css/style.css">
+	<style>
+		#operating-hours, #operating-hours>li, #address, #address>li {
+			list-style-type: none;
+			padding-left: 0;
+			color: white !important;
+		}
+	</style>
   </head>
   <body>
   	<nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
@@ -113,22 +120,26 @@
 	    				<div class="col-md-4 d-flex ftco-animate">
 	    					<div class="icon"><span class="icon-phone"></span></div>
 	    					<div class="text">
-	    						<h3>000 (123) 456 7890</h3>
-	    						<p>A small river named Duden flows</p>
+	    						<h3 id="phone-1"></h3>
+	    						<p id="sub-phone"></p>
 	    					</div>
 	    				</div>
 	    				<div class="col-md-4 d-flex ftco-animate">
 	    					<div class="icon"><span class="icon-my_location"></span></div>
 	    					<div class="text">
-	    						<h3>198 West 21th Street</h3>
-	    						<p>Suite 721 New York NY 10016</p>
+								<ul id="address"></ul>
+	    						<!-- <h3 id="address-1"></h3> -->
+	    						<!-- <p id="address-2">Suite 721 New York NY 10016</p> -->
 	    					</div>
 	    				</div>
 	    				<div class="col-md-4 d-flex ftco-animate">
 	    					<div class="icon"><span class="icon-clock-o"></span></div>
 	    					<div class="text">
-	    						<h3>Open Monday-Friday</h3>
-	    						<p>8:00am - 9:00pm</p>
+								<ul id="operating-hours">
+								</ul>
+	    						<!-- <h3>Open Tue - Thur 2:30pm - 9:00 Pm</h3>
+	    						<h3>Open Fri - Sat 1:00pm 9:30 Pm</h3>
+								<h3>Closed Sunday And Monday</h3> -->
 	    					</div>
 	    				</div>
 	    			</div>
@@ -848,7 +859,63 @@
   <script src="js/main.js"></script>
  
   <script src="https://cdnjs.cloudflare.com/ajax/libs/tabletop.js/1.5.1/tabletop.min.js"></script>
-  <script src="js/table.js"></script>
 
+<script>
+
+var publicSpreadsheetUrl = 'https://docs.google.com/spreadsheets/d/1R4Habcdcw45YgtVzXub6fdmad4iqgTd9EvAWjfXcELA/edit?usp=sharing';
+
+function init() {
+  Tabletop.init( { key: publicSpreadsheetUrl,
+				   callback: showInfo,
+				   simpleSheet: true } )
+}
+
+function showInfo(data, tabletop) {
+
+  for (var i = 0; i < data.length; i++) {
+
+   var nameOfRestaurant = data[i].name_of_restaurant;
+   var phone_number = data[0].phone_number;
+   var sub_phone = data[1].phone_number;
+   var address = data[i].address;
+   var operating_hours = data[i].operating_hours;
+
+  if(nameOfRestaurant){
+	  var navbarBrand = document.getElementById('restaurant-name-1');
+	  var nameOfRestaurant2 = document.getElementById('restraurant-name-2');
+	  navbarBrand.innerHTML = nameOfRestaurant;
+	  nameOfRestaurant2.innerHTML = nameOfRestaurant;
+	}
+
+	if(phone_number) {
+		var phone1 = document.getElementById('phone-1');
+		var subPhone = document.getElementById('sub-phone');
+		phone1.innerHTML = phone_number;
+		subPhone.innerHTML = sub_phone;
+	}
+
+	if(address) {
+		var address_ul = document.getElementById('address');
+		var address_li = document.createElement('li');
+		address_li.innerHTML = address;
+		address_ul.appendChild(address_li);
+	}
+
+	if(operating_hours) {
+		var operating_hours_ul = document.getElementById('operating-hours');
+		var operating_hours_li = document.createElement('li');
+		operating_hours_li.innerHTML = operating_hours;
+		operating_hours_ul.appendChild(operating_hours_li);
+
+	}
+	
+
+  }
+  console.log(data);
+}
+
+window.addEventListener('DOMContentLoaded', init)
+
+</script>
   </body>
 </html>
